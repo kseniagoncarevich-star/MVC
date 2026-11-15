@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AcademyCW.Models
+namespace Academy.Models
 {
     //[PrimaryKey(nameof(teacher), nameof(discipline))]
     

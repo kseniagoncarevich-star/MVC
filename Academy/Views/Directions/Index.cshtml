@@ -1,4 +1,4 @@
-@model IEnumerable<AcademyCW.Models.Direction>
+@model IEnumerable<Academy.Models.Direction>
 
 @{
     ViewData["Title"] = "Index";
@@ -17,7 +17,9 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.direction_name)
+				<a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]">
+                    @Html.DisplayNameFor(model => model.direction_name)                
+                </a>                
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Groups)

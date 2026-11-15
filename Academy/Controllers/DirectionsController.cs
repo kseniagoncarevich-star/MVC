@@ -1,7 +1,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AcademyCW.Models;
+using Academy.Models;
 
 public class DirectionsController : Controller
 {
@@ -13,21 +13,30 @@ public class DirectionsController : Controller
     }
 
     // GET: DIRECTIONS
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index(string sortOrder)    
     {
-        return View(await _context.Directions.ToListAsync());
+        ViewData["NameSortParam"] = sortOrder == "name_desc" ? "name_asc" : "name_desc";
+        IQueryable<Academy.Models.Direction> directions = from d in _context.Directions select d;
+        
+        switch (sortOrder)
+        {
+            case "name_asc": directions = directions.OrderBy(d => d.direction_name); break;
+            case "name_desc": directions = directions.OrderByDescending(d => d.direction_name); break;
+        }
+        return View(directions);
+        //return View(await _context.Directions.ToListAsync());
     }
 
     // GET: DIRECTIONS/Details/5
-    public async Task<IActionResult> Details(int? direction_id)
+    public async Task<IActionResult> Details(int? id)
     {
-        if (direction_id == null)
+        if (id == null)
         {
             return NotFound();
         }
 
         var direction = await _context.Directions
-            .FirstOrDefaultAsync(m => m.direction_id == direction_id);
+            .FirstOrDefaultAsync(m => m.direction_id == id);
         if (direction == null)
         {
             return NotFound();
@@ -59,14 +68,14 @@ public class DirectionsController : Controller
     }
 
     // GET: DIRECTIONS/Edit/5
-    public async Task<IActionResult> Edit(int? direction_id)
+    public async Task<IActionResult> Edit(int? id)
     {
-        if (direction_id == null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var direction = await _context.Directions.FindAsync(direction_id);
+        var direction = await _context.Directions.FindAsync(id);
         if (direction == null)
         {
             return NotFound();
